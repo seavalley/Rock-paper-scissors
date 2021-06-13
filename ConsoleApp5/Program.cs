@@ -51,13 +51,13 @@ namespace ConsoleApp5
             return hmac.ComputeHash(message);
         }
 
-        public static void GetWinner(int userchoice, int compchoice, string[] moves)
+        public static void GetWinner(int usermove, int computermove, string[] moves)
         {
-            if ((userchoice < compchoice && compchoice - userchoice <= moves.Length / 2) || (userchoice > compchoice && userchoice - compchoice > moves.Length / 2))
+            if ((usermove < computermove && computermove - usermove <= moves.Length / 2) || (usermove > computermove && usermove - computermove > moves.Length / 2))
             {
                 Console.WriteLine("YOU LOSE :(\nBETTER LUCK NEXT TIME!");
             }
-            else if (userchoice == compchoice)
+            else if (usermove == computermove)
             {
                 Console.WriteLine("IT'S A TIE!");
             }
@@ -81,13 +81,13 @@ namespace ConsoleApp5
             }
             Console.WriteLine("0 - Exit");
             Console.WriteLine("Enter your move:");
-            string choice = Console.ReadLine();
-            if (choice == "0")
+            string move = Console.ReadLine();
+            if (move == "0")
             {
                 Console.WriteLine("Have a good day!");
                 return;
             }
-            else if (int.TryParse(choice, out int result) && moves.Length - result >= 0)
+            else if (int.TryParse(move, out int result) && moves.Length - result >= 0)
             {
                 Console.WriteLine($"Your choice - {moves[result - 1]}");
                 Console.WriteLine($"Computer choice - {moves[compchoice]}");
