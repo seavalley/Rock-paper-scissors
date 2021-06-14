@@ -34,21 +34,14 @@ namespace ConsoleApp5
 
         public static string ConvertByteToString (byte[] bytes)
         {
-            string result = BitConverter.ToString(bytes).Replace("-", "").ToLower(); ;
-            return result;
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
         public static byte[] GenerateKey()
         {
             byte[] bytes = new byte[16];
-            var rng = new RNGCryptoServiceProvider();
-            rng.GetBytes(bytes);
+            RandomNumberGenerator.Create().GetBytes(bytes);
             return bytes;
-        }
-        public static byte[] GetHMAC(byte[] message, byte[] key)
-        {
-            var hmac = new HMACSHA256(key);
-            return hmac.ComputeHash(message);
         }
 
         public static void GetWinner(int usermove, int computermove, string[] moves)
@@ -73,7 +66,9 @@ namespace ConsoleApp5
             Random r = new Random();
             int compchoice = r.Next(0, moves.Length);
             byte[] key = GenerateKey();
-            Console.WriteLine($"HMAC: {ConvertByteToString(GetHMAC(Encoding.Default.GetBytes(moves[compchoice]), key))}");
+            String stringKey = ConvertByteToString(key);
+            HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(stringKey));
+            Console.WriteLine($"HMAC: {ConvertByteToString(hmac.ComputeHash(Encoding.UTF8.GetBytes(moves[compchoice])))}");
             Console.WriteLine("Available moves");
             for (int i = 0; i < moves.Length; i++)
             {
